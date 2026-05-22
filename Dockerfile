@@ -16,7 +16,7 @@ RUN pip install --upgrade pip \
 
 COPY api ./api
 COPY src ./src
-COPY data/processed ./data/processed
+RUN mkdir -p /app/data/processed/charts /app/data/processed/models
 
 EXPOSE 8000
 

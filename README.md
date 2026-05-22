@@ -1,6 +1,6 @@
 # Macro-Driven Sector Intelligence Platform
 
-A production-grade, end-to-end macro-economic sector analysis platform for Indian equity markets. This system ingests 15+ years of macro and market data, performs statistical hypothesis testing, detects economic regimes using unsupervised ML, forecasts sector returns using XGBoost and Prophet, and serves the results through a FastAPI backend, a React frontend, and an optional Streamlit dashboard.
+A production-grade, end-to-end macro-economic sector analysis platform for Indian equity markets. This system ingests 15+ years of macro and market data, performs statistical hypothesis testing, detects economic regimes using unsupervised ML, forecasts sector returns using XGBoost and Prophet, and serves the results through a FastAPI backend, a React frontend, and a legacy Streamlit prototype.
 
 ---
 
@@ -14,7 +14,7 @@ The platform is organized into 7 core phases:
 4. **Regime Detection**: Engineers features (MoM, YoY, Rolling Z-Scores), reduces dimensions via PCA, and applies K-Means clustering to classify historical months into 4 regimes: Expansion, Peak, Contraction, Recovery.
 5. **Predictive Modeling**: Trains XGBoost classifiers via strict walk-forward backtesting to predict next-month sectoral direction. Employs Facebook Prophet for absolute index forecasting.
 6. **Risk Metrics**: Calculates annualized Sharpe Ratios, Maximum Drawdowns, and Historical VaR segmented by regime.
-7. **Application Layer**: FastAPI APIs, a React frontend for the main product interface, and an optional Streamlit dashboard for analyst workflows.
+7. **Application Layer**: FastAPI APIs, a React frontend for the main product interface, and a legacy Streamlit prototype kept for analyst-style exploration.
 
 ---
 
@@ -94,15 +94,15 @@ The main app is available at `http://127.0.0.1:5173`, and the API runs at `http:
 - **React Frontend**: Primary product interface for regime views, model outputs, risk analytics, tuning, and live updates.
 - **FastAPI Backend**: Provides prediction, regime, simulation, sentiment, HMM, tuning, and email-report endpoints.
 
-## Optional Streamlit Dashboard
+## Legacy Streamlit Prototype
 
-If you want the analyst-oriented dashboard version, you can also run:
+This repository also includes an earlier Streamlit-based interface for analyst-oriented exploration. It is not the primary product surface, but it is kept in the repo as a prototype and reference implementation.
 
 ```bash
-streamlit run dashboard/app.py
+streamlit run legacy_streamlit/app.py
 ```
 
-### Streamlit Tabs
+### Prototype Tabs
 - **Macro Panel**: KPIs and historical trends.
 - **Regime Heatmap**: Sector rotation matrix and timeline of detected macro regimes.
 - **Predictive Engine**: Next-month XGBoost directional forecasts per sector with feature importance breakdown.
