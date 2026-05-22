@@ -1,6 +1,6 @@
 # Macro-Driven Sector Intelligence Platform
 
-A production-grade, end-to-end macro-economic sector analysis platform for Indian equity markets. This system ingests 15+ years of macro and market data, performs statistical hypothesis testing, detects economic regimes using unsupervised ML, forecasts sector returns using XGBoost & Prophet, and presents everything via an interactive Streamlit dashboard.
+A production-grade, end-to-end macro-economic sector analysis platform for Indian equity markets. This system ingests 15+ years of macro and market data, performs statistical hypothesis testing, detects economic regimes using unsupervised ML, forecasts sector returns using XGBoost and Prophet, and serves the results through a FastAPI backend, a React frontend, and an optional Streamlit dashboard.
 
 ---
 
@@ -14,7 +14,7 @@ The platform is organized into 7 core phases:
 4. **Regime Detection**: Engineers features (MoM, YoY, Rolling Z-Scores), reduces dimensions via PCA, and applies K-Means clustering to classify historical months into 4 regimes: Expansion, Peak, Contraction, Recovery.
 5. **Predictive Modeling**: Trains XGBoost classifiers via strict walk-forward backtesting to predict next-month sectoral direction. Employs Facebook Prophet for absolute index forecasting.
 6. **Risk Metrics**: Calculates annualized Sharpe Ratios, Maximum Drawdowns, and Historical VaR segmented by regime.
-7. **Interactive Dashboard**: A premium dark-themed Streamlit application visualizing the outputs.
+7. **Application Layer**: FastAPI APIs, a React frontend for the main product interface, and an optional Streamlit dashboard for analyst workflows.
 
 ---
 
@@ -72,20 +72,42 @@ python src/risk_metrics.py
 
 ---
 
-## Launching the Dashboard
+## Running the App
 
-Once all phases have been executed and the processed artifacts exist, launch the interactive Streamlit dashboard:
+Once all phases have been executed and the processed artifacts exist, start the backend and frontend:
+
+```bash
+uvicorn api.main:app --host 127.0.0.1 --port 8000
+```
+
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev -- --host 127.0.0.1 --port 5173
+```
+
+The main app is available at `http://127.0.0.1:5173`, and the API runs at `http://127.0.0.1:8000`.
+
+### Main Interface
+- **React Frontend**: Primary product interface for regime views, model outputs, risk analytics, tuning, and live updates.
+- **FastAPI Backend**: Provides prediction, regime, simulation, sentiment, HMM, tuning, and email-report endpoints.
+
+## Optional Streamlit Dashboard
+
+If you want the analyst-oriented dashboard version, you can also run:
 
 ```bash
 streamlit run dashboard/app.py
 ```
 
-### Dashboard Tabs
+### Streamlit Tabs
 - **Macro Panel**: KPIs and historical trends.
 - **Regime Heatmap**: Sector rotation matrix and timeline of detected macro regimes.
 - **Predictive Engine**: Next-month XGBoost directional forecasts per sector with feature importance breakdown.
 - **Risk Management**: Segmented Sharpe Ratio, Max Drawdown, and VaR table.
-- **What-If Simulator**: Interactive sliders to simulate macro shocks (e.g., Fed Rate hikes, Crude spikes) and instantly view the predicted impact on sectoral probabilities.
+- **What-If Simulator**: Interactive sliders to simulate macro shocks and view the predicted impact on sector probabilities.
 
 ---
 
