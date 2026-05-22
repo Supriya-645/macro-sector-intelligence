@@ -1,5 +1,6 @@
 # Environment
 .env
+.env.*
 .venv/
 venv/
 env/
@@ -20,6 +21,7 @@ build/
 
 # Data (raw downloads can be re-fetched)
 data/raw/
+data/processed/
 
 # IDE
 .idea/
@@ -33,3 +35,10 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+notebooks/
+
+# Project docs / exports
+*.docx
+
+# Frontend build output
+frontend/dist/
