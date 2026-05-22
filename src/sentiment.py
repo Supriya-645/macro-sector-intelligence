@@ -52,14 +52,14 @@ def fetch_market_news(
         and ``'published'`` keys.
     """
     if yf is None:
-        print("  ⚠️  yfinance not installed. Cannot fetch news.")
+        print("   yfinance not installed. Cannot fetch news.")
         return []
 
     try:
         t = yf.Ticker(ticker)
         news_items = t.news or []
     except Exception as exc:
-        print(f"  ⚠️  Failed to fetch news for {ticker}: {exc}")
+        print(f"   Failed to fetch news for {ticker}: {exc}")
         return []
 
     articles = []
@@ -111,7 +111,7 @@ def analyse_sentiment(articles: List[Dict]) -> pd.DataFrame:
         'Neutral').
     """
     if SentimentIntensityAnalyzer is None:
-        print("  ⚠️  vaderSentiment not installed. Cannot score headlines.")
+        print("   vaderSentiment not installed. Cannot score headlines.")
         return pd.DataFrame()
 
     if not articles:
@@ -219,10 +219,10 @@ if __name__ == "__main__":
     if df.empty:
         print("  No news retrieved. Check your internet connection.")
     else:
-        print(f"\n  📰 Headlines Scored: {len(df)}")
-        print(f"  📊 Market Sentiment Score: {pulse['score']:.3f} ({pulse['label']})")
+        print(f"\n  Headlines Scored: {len(df)}")
+        print(f"  Market Sentiment Score: {pulse['score']:.3f} ({pulse['label']})")
         print(f"\n  Top 5 Headlines:")
         for _, row in df.head(5).iterrows():
-            emoji = "🟢" if row["label"] == "Positive" else ("🔴" if row["label"] == "Negative" else "⚪")
-            print(f"    {emoji} [{row['compound']:+.3f}] {row['title'][:80]}")
+            sentiment_label = row["label"].upper()
+            print(f"    {sentiment_label:8s} [{row['compound']:+.3f}] {row['title'][:80]}")
     print("=" * 60)

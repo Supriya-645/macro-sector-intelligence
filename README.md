@@ -4,9 +4,9 @@ A production-grade, end-to-end macro-economic sector analysis platform for India
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
-The pipeline is split into 8 modular phases:
+The platform is organized into 7 core phases:
 
 1. **Data Pipeline**: Ingests Nifty sectoral indices via `yfinance`, US Macro/Commodities via `fredapi`, and Indian Macro via `wbgapi` (`wbgapi` used in place of deprecated `wbdata`). Handles forward-filling and monthly resampling.
 2. **Exploratory Data Analysis**: Generates correlation heatmaps and event-based performance distributions (e.g., 2008 GFC, 2020 COVID).
@@ -18,7 +18,7 @@ The pipeline is split into 8 modular phases:
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 1. **Clone the repository** and navigate to the project root:
    ```bash
@@ -44,7 +44,7 @@ The pipeline is split into 8 modular phases:
 
 ---
 
-## 🏃‍♂️ Running the Pipeline
+## Running the Pipeline
 
 Execute the phases sequentially from the project root. The scripts are designed to gracefully handle API rate limits or missing data columns.
 
@@ -72,7 +72,7 @@ python src/risk_metrics.py
 
 ---
 
-## 📊 Launching the Dashboard
+## Launching the Dashboard
 
 Once all phases have been executed and the processed artifacts exist, launch the interactive Streamlit dashboard:
 
@@ -89,7 +89,7 @@ streamlit run dashboard/app.py
 
 ---
 
-## 🧠 Key Analytical Insights
+## Key Analytical Insights
 - **Interest Rates vs. IT/Pharma**: Defensive sectors like IT and Pharma historically show distinct rolling beta behaviors during contraction regimes compared to high-beta sectors like Realty and Metals.
 - **Regime Classification**: The K-Means clustering effectively identified the 2008 GFC and 2020 COVID crash as "Contraction" regimes purely based on unsupervised macro features (VIX spikes, negative GDP momentum).
 - **Predictive Power**: Rate-of-change features (MoM, YoY) on DXY and Brent Crude proved highly influential in the XGBoost models for predicting FMCG and Auto sector directions.

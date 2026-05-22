@@ -32,14 +32,14 @@ if "Gold_Price" in MACRO_COLS:
 
 def plot_correlation_heatmap(df):
     """Plot static and interactive correlation heatmaps."""
-    print("  📊 Generating correlation heatmaps...")
+    print("  Generating correlation heatmaps...")
     
     # Filter columns that exist in the dataframe
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     avail_macros = [c for c in MACRO_COLS if c in df.columns]
     
     if not avail_sectors or not avail_macros:
-        print("  ⚠️ Missing required columns for correlation.")
+        print("  Missing required columns for correlation.")
         return
 
     # Calculate correlation
@@ -79,12 +79,12 @@ def plot_correlation_heatmap(df):
     eda_charts_dir.mkdir(parents=True, exist_ok=True)
     html_path = eda_charts_dir / "correlation_heatmap.html"
     fig.write_html(str(html_path))
-    print(f"  📊 Saved interactive heatmap: {html_path.relative_to(paths['processed'].parent.parent)}")
+    print(f"  Saved interactive heatmap: {html_path.relative_to(paths['processed'].parent.parent)}")
 
 
 def plot_rolling_correlations(df, window=12):
     """Plot 12-month rolling correlations for top macro indicators vs sectors."""
-    print(f"  📈 Generating {window}-month rolling correlations...")
+    print(f"  Generating {window}-month rolling correlations...")
     
     top_macros = ["US_Fed_Funds_Rate", "Brent_Crude", "DXY", "India_VIX", "US_10Y_Yield"]
     avail_macros = [m for m in top_macros if m in df.columns]
@@ -107,7 +107,7 @@ def plot_rolling_correlations(df, window=12):
 
 def plot_event_distributions(df):
     """Plot box plots of sector returns during specific historical events."""
-    print("  📅 Generating event-based return distributions...")
+    print("  Generating event-based return distributions...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     if not avail_sectors:
@@ -129,7 +129,7 @@ def plot_event_distributions(df):
             event_data.append(melted)
             
     if not event_data:
-        print("  ⚠️ No data available during specified event windows.")
+        print("  No data available during specified event windows.")
         return
         
     combined_event_data = pd.concat(event_data, ignore_index=True)
@@ -152,7 +152,7 @@ def plot_event_distributions(df):
 
 def plot_trend_overview(df):
     """Plot multi-panel time series overview."""
-    print("  📈 Generating trend overview...")
+    print("  Generating trend overview...")
     
     cols_to_plot = ["Nifty_50", "India_VIX", "US_Fed_Funds_Rate", "Brent_Crude"]
     avail_cols = [c for c in cols_to_plot if c in df.columns]
@@ -199,7 +199,7 @@ def run_eda():
     df = load_master_dataset()
     
     if df.empty:
-        print("  ❌ Master dataset is empty. Run Phase 1 first.")
+        print("  Master dataset is empty. Run Phase 1 first.")
         return
 
     plot_correlation_heatmap(df)
@@ -208,7 +208,7 @@ def run_eda():
     plot_trend_overview(df)
     
     print("=" * 60)
-    print("  ✅ PHASE 2 COMPLETE")
+    print("  PHASE 2 COMPLETE")
     print("=" * 60)
 
 

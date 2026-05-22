@@ -35,7 +35,7 @@ if "Gold_Price" in MACRO_COLS:
 
 def engineer_features(df):
     """Engineer features from macro indicators for clustering."""
-    print("  🔧 Engineering macro features...")
+    print("  Engineering macro features...")
     
     avail_macros = [c for c in MACRO_COLS if c in df.columns]
     features = pd.DataFrame(index=df.index)
@@ -57,7 +57,7 @@ def engineer_features(df):
 
 def perform_pca(features_df):
     """Standardize features and apply PCA to retain >=85% variance."""
-    print("  📉 Applying PCA for dimensionality reduction...")
+    print("  Applying PCA for dimensionality reduction...")
     
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(features_df)
@@ -71,7 +71,10 @@ def perform_pca(features_df):
     
     # Number of components needed for 85% variance
     n_components = np.argmax(cumulative_variance >= 0.85) + 1
-    print(f"    ➡️ Using {n_components} components to explain {cumulative_variance[n_components-1]*100:.1f}% of variance")
+    print(
+        f"    Using {n_components} components to explain "
+        f"{cumulative_variance[n_components-1]*100:.1f}% of variance"
+    )
     
     # Plot scree plot
     plt.figure(figsize=(10, 6))
@@ -93,7 +96,7 @@ def perform_pca(features_df):
 
 def detect_regimes(pca_df, original_df):
     """Cluster PCA features and label regimes."""
-    print("  🤖 Clustering via K-Means (k=4)...")
+    print("  Clustering via K-Means (k=4)...")
     
     kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
     clusters = kmeans.fit_predict(pca_df)
@@ -126,14 +129,14 @@ def detect_regimes(pca_df, original_df):
     paths = get_data_paths()
     labels_path = paths["processed"] / "regime_labels.csv"
     labels_df[["Regime"]].to_csv(labels_path)
-    print(f"  💾 Saved regime labels: {labels_path.name}")
+    print(f"  Saved regime labels: {labels_path.name}")
     
     return labels_df
 
 
 def plot_regime_validation(labels_df, df):
     """Plot Nifty 50 with background regime colors."""
-    print("  📊 Plotting regime validation...")
+    print("  Plotting regime validation...")
     
     if "Nifty_50" not in df.columns:
         return
@@ -163,7 +166,7 @@ def plot_regime_validation(labels_df, df):
 
 def plot_regime_sector_distributions(labels_df, df):
     """Box plots of sector returns by regime."""
-    print("  📊 Plotting sector return distributions by regime...")
+    print("  Plotting sector return distributions by regime...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     if not avail_sectors:
@@ -202,13 +205,13 @@ def run_regime_detection():
     df = load_master_dataset()
     
     if df.empty:
-        print("  ❌ Master dataset is empty. Run Phase 1 first.")
+        print("  Master dataset is empty. Run Phase 1 first.")
         return
         
     features_df = engineer_features(df)
     
     if features_df.empty:
-        print("  ❌ Could not generate features.")
+        print("  Could not generate features.")
         return
         
     pca_df = perform_pca(features_df)
@@ -218,7 +221,7 @@ def run_regime_detection():
     plot_regime_sector_distributions(labels_df, df)
 
     print("=" * 60)
-    print("  ✅ PHASE 4 COMPLETE")
+    print("  PHASE 4 COMPLETE")
     print("=" * 60)
 
 

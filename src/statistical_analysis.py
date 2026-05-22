@@ -38,7 +38,7 @@ def compute_granger_causality(df, max_lags=3):
     Tests if past values of a macro indicator help predict future values
     of a sector return.
     """
-    print("  🧪 Running Granger causality tests...")
+    print("  Running Granger causality tests...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     avail_macros = [c for c in MACRO_COLS if c in df.columns]
@@ -49,7 +49,7 @@ def compute_granger_causality(df, max_lags=3):
     clean_df = df[avail_sectors + avail_macros].dropna()
     
     if len(clean_df) < max_lags + 10:
-        print("  ⚠️ Insufficient data for Granger causality.")
+        print("  Insufficient data for Granger causality.")
         return None
 
     # Matrix for heatmap (min p-value across lags)
@@ -99,7 +99,7 @@ def compute_granger_causality(df, max_lags=3):
     paths = get_data_paths()
     results_path = paths["processed"] / "granger_results.csv"
     results_df.to_csv(results_path, index=False)
-    print(f"  💾 Saved Granger results: {results_path.name}")
+    print(f"  Saved Granger results: {results_path.name}")
     
     # Plot heatmap of min p-values
     p_value_matrix = p_value_matrix.astype(float)
@@ -125,7 +125,7 @@ def compute_granger_causality(df, max_lags=3):
 
 def compute_rolling_ols(df, window=36):
     """Run 36-month rolling OLS regressions to find time-varying betas."""
-    print(f"  📈 Running {window}-month rolling OLS regressions...")
+    print(f"  Running {window}-month rolling OLS regressions...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     key_macros = ["US_Fed_Funds_Rate", "US_CPI", "Brent_Crude", "US_10Y_Yield", "DXY"]
@@ -137,7 +137,7 @@ def compute_rolling_ols(df, window=36):
     clean_df = df[avail_sectors + avail_macros].dropna()
     
     if len(clean_df) < window + 5:
-         print("  ⚠️ Insufficient data for rolling OLS.")
+         print("  Insufficient data for rolling OLS.")
          return
 
     # Add a constant for the intercept
@@ -167,12 +167,12 @@ def compute_rolling_ols(df, window=36):
             save_chart(plt.gcf(), f"rolling_ols_betas_{sector}", subfolder="statistical")
             
         except Exception as e:
-            print(f"    ❌ Failed rolling OLS for {sector}: {e}")
+            print(f"    Failed rolling OLS for {sector}: {e}")
 
 
 def compute_correlation_pvalues(df):
     """Compute Pearson and Spearman correlations with exact p-values."""
-    print("  🔢 Computing correlation p-values...")
+    print("  Computing correlation p-values...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     avail_macros = [c for c in MACRO_COLS if c in df.columns]
@@ -202,12 +202,12 @@ def compute_correlation_pvalues(df):
     paths = get_data_paths()
     results_path = paths["processed"] / "correlation_pvalues.csv"
     results_df.to_csv(results_path, index=False)
-    print(f"  💾 Saved correlation p-values: {results_path.name}")
+    print(f"  Saved correlation p-values: {results_path.name}")
 
 
 def build_sector_rotation_matrix(df):
     """Build a summary matrix of sector performance across macro environments."""
-    print("  🔄 Building Sector Rotation Matrix...")
+    print("  Building Sector Rotation Matrix...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     if not avail_sectors:
@@ -232,7 +232,7 @@ def build_sector_rotation_matrix(df):
         environments["Low VIX"] = df[df["India_VIX"] < vix_median * 0.9] # Bottom tier
 
     if not environments:
-        print("  ⚠️ Missing indicators for rotation matrix environments.")
+        print("  Missing indicators for rotation matrix environments.")
         return
 
     # Calculate average returns
@@ -260,7 +260,7 @@ def build_sector_rotation_matrix(df):
     paths = get_data_paths()
     results_path = paths["processed"] / "sector_rotation_matrix.csv"
     rotation_matrix.to_csv(results_path)
-    print(f"  💾 Saved sector rotation matrix: {results_path.name}")
+    print(f"  Saved sector rotation matrix: {results_path.name}")
     
     # Plot Heatmap
     plt.figure(figsize=(14, 8))
@@ -295,7 +295,7 @@ def run_statistical_analysis():
     df = load_master_dataset()
     
     if df.empty:
-        print("  ❌ Master dataset is empty. Run Phase 1 first.")
+        print("  Master dataset is empty. Run Phase 1 first.")
         return
 
     compute_granger_causality(df)
@@ -304,7 +304,7 @@ def run_statistical_analysis():
     build_sector_rotation_matrix(df)
     
     print("=" * 60)
-    print("  ✅ PHASE 3 COMPLETE")
+    print("  PHASE 3 COMPLETE")
     print("=" * 60)
 
 

@@ -669,9 +669,9 @@ elif navigation == "Risk & Safety":
                 fit_columns_on_grid_load=True,
             )
             st.caption(
-                "💡 **Risk-Adjusted Return (Sharpe)**: Higher is better. It measures how much return you get for the risk you take.<br>"
-                "💡 **Max Loss (Drawdown)**: Lower is better. The biggest historical drop from a peak to a trough.<br>"
-                "💡 **95% Value at Risk**: The expected maximum loss in a normal month with 95% confidence.",
+                "**Risk-Adjusted Return (Sharpe)**: Higher is better. It measures how much return you get for the risk you take.<br>"
+                "**Max Loss (Drawdown)**: Lower is better. The biggest historical drop from a peak to a trough.<br>"
+                "**95% Value at Risk**: The expected maximum loss in a normal month with 95% confidence.",
                 unsafe_allow_html=True
             )
         else:

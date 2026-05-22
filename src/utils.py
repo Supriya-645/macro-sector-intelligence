@@ -69,7 +69,7 @@ def load_env():
     fred_key = os.getenv("FRED_API_KEY", "")
     if not fred_key or fred_key == "your_fred_api_key_here":
         print(
-            "⚠️  WARNING: FRED_API_KEY not set or still placeholder. "
+            " WARNING: FRED_API_KEY not set or still placeholder. "
             "FRED data will be skipped. Set it in .env to enable."
         )
 
@@ -250,7 +250,7 @@ def save_chart(fig, name, subfolder=""):
     filepath = out_dir / f"{name}.png"
     fig.savefig(filepath, bbox_inches="tight")
     plt.close(fig)
-    print(f"  📊 Saved chart: {filepath.relative_to(get_project_root())}")
+    print(f"  Saved chart: {filepath.relative_to(get_project_root())}")
 
 
 # ---------------------------------------------------------------------------

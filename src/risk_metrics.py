@@ -36,7 +36,7 @@ def compute_max_drawdown(returns):
 
 def compute_risk_metrics(df, regime_df):
     """Compute risk metrics per sector per regime."""
-    print("  ⚠️ Computing Risk Metrics...")
+    print("  Computing Risk Metrics...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     if not avail_sectors:
@@ -122,13 +122,13 @@ def compute_risk_metrics(df, regime_df):
     paths = get_data_paths()
     out_path = paths["processed"] / "risk_metrics.csv"
     results_df.to_csv(out_path, index=False)
-    print(f"  💾 Saved risk metrics table: {out_path.name}")
+    print(f"  Saved risk metrics table: {out_path.name}")
     
     return results_df
 
 def plot_risk_metrics(results_df):
     """Generate visualizations for risk metrics."""
-    print("  📊 Generating risk charts...")
+    print("  Generating risk charts...")
     
     # Filter out 'All Regimes' and NaNs for plotting regime comparisons
     regime_only = results_df[(results_df["Regime"] != "All Regimes")].dropna()
@@ -213,13 +213,13 @@ def run_risk_metrics():
     df = load_master_dataset()
     
     if df.empty:
-        print("  ❌ Master dataset is empty. Run Phase 1 first.")
+        print("  Master dataset is empty. Run Phase 1 first.")
         return
         
     try:
         regime_df = load_regime_labels()
     except Exception:
-        print("  ❌ Regime labels not found. Run Phase 4 first.")
+        print("  Regime labels not found. Run Phase 4 first.")
         return
         
     results_df = compute_risk_metrics(df, regime_df)
@@ -227,7 +227,7 @@ def run_risk_metrics():
         plot_risk_metrics(results_df)
         
     print("=" * 60)
-    print("  ✅ PHASE 6 COMPLETE")
+    print("  PHASE 6 COMPLETE")
     print("=" * 60)
 
 

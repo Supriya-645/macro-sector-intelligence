@@ -77,7 +77,7 @@ def fetch_yfinance_data(tickers_dict, start, end):
     failed = []
 
     for name, ticker in tickers_dict.items():
-        print(f"  📥 Downloading {name} ({ticker})...")
+        print(f"  Downloading {name} ({ticker})...")
         try:
             data = yf.download(
                 ticker,
@@ -87,7 +87,7 @@ def fetch_yfinance_data(tickers_dict, start, end):
                 auto_adjust=True,
             )
             if data.empty:
-                print(f"    ⚠️  No data returned for {name}")
+                print(f"     No data returned for {name}")
                 failed.append(name)
                 continue
 
@@ -98,14 +98,14 @@ def fetch_yfinance_data(tickers_dict, start, end):
                 close = close.iloc[:, 0]
             monthly = close.resample("ME").last()
             all_data[name] = monthly
-            print(f"    ✅ {len(monthly)} monthly observations")
+            print(f"    {len(monthly)} monthly observations")
 
         except Exception as e:
-            print(f"    ❌ Failed: {e}")
+            print(f"    Failed: {e}")
             failed.append(name)
 
     if failed:
-        print(f"\n  ⚠️  Failed tickers: {', '.join(failed)}")
+        print(f"\n   Failed tickers: {', '.join(failed)}")
 
     df = pd.DataFrame(all_data)
     df.index.name = "Date"
@@ -136,13 +136,13 @@ def fetch_fred_data(series_dict, api_key, start, end):
         Monthly macro data indexed by month-end date.
     """
     if not api_key or api_key == "your_fred_api_key_here":
-        print("  ⚠️  FRED API key not configured — skipping FRED data.")
+        print("   FRED API key not configured — skipping FRED data.")
         return pd.DataFrame()
 
     try:
         from fredapi import Fred
     except ImportError:
-        print("  ❌ fredapi not installed. Run: pip install fredapi")
+        print("  fredapi not installed. Run: pip install fredapi")
         return pd.DataFrame()
 
     fred = Fred(api_key=api_key)
@@ -150,7 +150,7 @@ def fetch_fred_data(series_dict, api_key, start, end):
     failed = []
 
     for name, series_id in series_dict.items():
-        print(f"  📥 Downloading {name} ({series_id}) from FRED...")
+        print(f"  Downloading {name} ({series_id}) from FRED...")
         try:
             series = fred.get_series(
                 series_id,
@@ -158,7 +158,7 @@ def fetch_fred_data(series_dict, api_key, start, end):
                 observation_end=end,
             )
             if series.empty:
-                print(f"    ⚠️  No data for {name}")
+                print(f"     No data for {name}")
                 failed.append(name)
                 continue
 
@@ -179,14 +179,14 @@ def fetch_fred_data(series_dict, api_key, start, end):
                 monthly = series.resample("ME").last()
 
             all_data[name] = monthly
-            print(f"    ✅ {len(monthly)} monthly observations")
+            print(f"    {len(monthly)} monthly observations")
 
         except Exception as e:
-            print(f"    ❌ Failed: {e}")
+            print(f"    Failed: {e}")
             failed.append(name)
 
     if failed:
-        print(f"\n  ⚠️  Failed FRED series: {', '.join(failed)}")
+        print(f"\n   Failed FRED series: {', '.join(failed)}")
 
     df = pd.DataFrame(all_data)
     df.index.name = "Date"
@@ -218,14 +218,14 @@ def fetch_world_bank_data(indicators_dict, country_code="IND",
     try:
         import wbgapi as wb
     except ImportError:
-        print("  ❌ wbgapi not installed. Run: pip install wbgapi")
+        print("  wbgapi not installed. Run: pip install wbgapi")
         return pd.DataFrame()
 
     all_data = {}
     current_year = datetime.now().year
 
     for name, indicator in indicators_dict.items():
-        print(f"  📥 Downloading {name} ({indicator}) from World Bank...")
+        print(f"  Downloading {name} ({indicator}) from World Bank...")
         try:
             # wbgapi returns a DataFrame with years as columns
             result = wb.data.DataFrame(
@@ -237,7 +237,7 @@ def fetch_world_bank_data(indicators_dict, country_code="IND",
             )
 
             if result.empty:
-                print(f"    ⚠️  No data for {name}")
+                print(f"     No data for {name}")
                 continue
 
             # Transpose: years become rows
@@ -261,11 +261,11 @@ def fetch_world_bank_data(indicators_dict, country_code="IND",
             # Resample to monthly with forward fill
             monthly = annual_series.resample("ME").ffill()
             all_data[name] = monthly
-            print(f"    ✅ {len(monthly)} monthly observations "
+            print(f"    {len(monthly)} monthly observations "
                   f"(from {len(annual_series)} annual)")
 
         except Exception as e:
-            print(f"    ❌ Failed: {e}")
+            print(f"    Failed: {e}")
 
     df = pd.DataFrame(all_data)
     df.index.name = "Date"
@@ -364,7 +364,7 @@ def generate_quality_report(df, output_path):
         for col in df.columns:
             n = nulls[col]
             pct = (n / total) * 100
-            status = "✅" if pct < 5 else ("⚠️" if pct < 20 else "❌")
+            status = "OK" if pct < 5 else ("WARN" if pct < 20 else "ERR")
             f.write(f"  {status} {col:<30s}  {n:>4d} nulls  ({pct:5.1f}%)\n")
 
         f.write(f"\n  Total cells: {df.size}\n")
@@ -386,7 +386,7 @@ def generate_quality_report(df, output_path):
         for col in df.columns:
             f.write(f"  {col:<30s}  {str(df[col].dtype)}\n")
 
-    print(f"  📄 Quality report saved: {output_path}")
+    print(f"  Quality report saved: {output_path}")
 
 
 # ---------------------------------------------------------------------------
@@ -415,45 +415,45 @@ def run_pipeline():
     # ------------------------------------------------------------------
     # Step 1: Fetch yfinance data (equity indices + market indicators)
     # ------------------------------------------------------------------
-    print("\n📈 Step 1/4: Fetching yfinance data...")
+    print("\nStep 1/4: Fetching yfinance data...")
     all_yf_tickers = {**SECTOR_INDICES, **MARKET_TICKERS}
     equity_df = fetch_yfinance_data(all_yf_tickers, START_DATE, END_DATE)
 
     if not equity_df.empty:
         equity_df.to_csv(paths["raw"] / "yfinance_data.csv")
-        print(f"  💾 Saved raw yfinance data: {equity_df.shape}")
+        print(f"  Saved raw yfinance data: {equity_df.shape}")
 
     # ------------------------------------------------------------------
     # Step 2: Fetch FRED data (US macro + commodities)
     # ------------------------------------------------------------------
-    print("\n🏛️  Step 2/4: Fetching FRED data...")
+    print("\n Step 2/4: Fetching FRED data...")
     fred_df = fetch_fred_data(FRED_SERIES, env["FRED_API_KEY"],
                                START_DATE, END_DATE)
 
     if not fred_df.empty:
         fred_df.to_csv(paths["raw"] / "fred_data.csv")
-        print(f"  💾 Saved raw FRED data: {fred_df.shape}")
+        print(f"  Saved raw FRED data: {fred_df.shape}")
 
     # ------------------------------------------------------------------
     # Step 3: Fetch World Bank data (India macro)
     # ------------------------------------------------------------------
-    print("\n🌍 Step 3/4: Fetching World Bank data...")
+    print("\nStep 3/4: Fetching World Bank data...")
     wb_df = fetch_world_bank_data(WORLD_BANK_INDICATORS)
 
     if not wb_df.empty:
         wb_df.to_csv(paths["raw"] / "worldbank_data.csv")
-        print(f"  💾 Saved raw World Bank data: {wb_df.shape}")
+        print(f"  Saved raw World Bank data: {wb_df.shape}")
 
     # ------------------------------------------------------------------
     # Step 4: Clean, merge, and save
     # ------------------------------------------------------------------
-    print("\n🔧 Step 4/4: Cleaning and merging...")
+    print("\nStep 4/4: Cleaning and merging...")
     master = clean_and_merge(equity_df, fred_df, wb_df)
 
     # Save master dataset
     master_path = paths["processed"] / "master_dataset.csv"
     master.to_csv(master_path)
-    print(f"\n  💾 Master dataset saved: {master_path}")
+    print(f"\n  Master dataset saved: {master_path}")
     print(f"     Shape: {master.shape[0]} rows × {master.shape[1]} columns")
     print(f"     Date range: {master.index.min().date()} → "
           f"{master.index.max().date()}")
@@ -464,7 +464,7 @@ def run_pipeline():
 
     # Summary
     print("\n" + "=" * 60)
-    print("  ✅ PHASE 1 COMPLETE")
+    print("  PHASE 1 COMPLETE")
     print("=" * 60)
     print(f"  Master dataset: {master_path}")
     print(f"  Quality report: {report_path}")

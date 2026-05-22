@@ -155,7 +155,7 @@ def run_backtest(
     try:
         import vectorbt as vbt
     except ImportError:
-        print("  ⚠️  vectorbt not installed. Using manual backtest.")
+        print("   vectorbt not installed. Using manual backtest.")
         return _manual_backtest(predictions_df, sector_name)
 
     if predictions_df.empty:
@@ -376,12 +376,12 @@ def run_all_backtests() -> Dict:
     models_dir = paths["models"]
 
     if not models_dir.exists():
-        print("  ❌ No models found. Run Phase 5 first.")
+        print("  No models found. Run Phase 5 first.")
         return {}
 
     model_files = list(models_dir.glob("xgb_*.joblib"))
     if not model_files:
-        print("  ❌ No XGBoost models found in models directory.")
+        print("  No XGBoost models found in models directory.")
         return {}
 
     all_stats = {}
@@ -389,16 +389,16 @@ def run_all_backtests() -> Dict:
     for mf in model_files:
         sector_col = mf.stem.replace("xgb_", "")
         clean_name = sector_col.replace("_Return", "")
-        print(f"  🔄 Backtesting {clean_name}...")
+        print(f"  Backtesting {clean_name}...")
 
         if sector_col not in df.columns:
-            print(f"    ⚠️  {sector_col} not in dataset. Skipping.")
+            print(f"     {sector_col} not in dataset. Skipping.")
             continue
 
         preds_df = load_predictions(sector_col, df, regime_df)
 
         if preds_df.empty:
-            print(f"    ⚠️  Not enough data for {clean_name}.")
+            print(f"     Not enough data for {clean_name}.")
             continue
 
         stats = run_backtest(preds_df, clean_name)
@@ -406,7 +406,7 @@ def run_all_backtests() -> Dict:
         if stats:
             all_stats[clean_name] = stats
             print(
-                f"    ✅ {clean_name}: "
+                f"    {clean_name}: "
                 f"AI {stats['strategy_return']:+.1%} vs "
                 f"B&H {stats['buyhold_return']:+.1%} | "
                 f"Win Rate {stats['win_rate']:.0f}%"
@@ -417,10 +417,10 @@ def run_all_backtests() -> Dict:
         summary_path = paths["processed"] / "backtest_results.json"
         with open(summary_path, "w") as f:
             json.dump(all_stats, f, indent=4)
-        print(f"\n  💾 Saved backtest results to {summary_path.name}")
+        print(f"\n  Saved backtest results to {summary_path.name}")
 
     print("=" * 60)
-    print("  ✅ BACKTESTING COMPLETE")
+    print("  BACKTESTING COMPLETE")
     print("=" * 60)
 
     return all_stats

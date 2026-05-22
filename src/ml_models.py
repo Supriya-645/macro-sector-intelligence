@@ -159,7 +159,7 @@ def plot_feature_importances(sector, importances, feature_names):
 
 def build_xgboost_models(df, regime_df):
     """Build and evaluate XGBoost models for all sectors."""
-    print("  🤖 Building XGBoost Classifiers with walk-forward backtesting...")
+    print("  Building XGBoost Classifiers with walk-forward backtesting...")
     
     avail_sectors = [c for c in SECTOR_RETURN_COLS if c in df.columns]
     
@@ -171,14 +171,14 @@ def build_xgboost_models(df, regime_df):
         X, y = prepare_xgboost_data(df, regime_df, sector)
         
         if len(X) < 60:
-            print(f"      ⚠️ Not enough data for {sector} (n={len(X)})")
+            print(f"      Not enough data for {sector} (n={len(X)})")
             continue
             
         tuned_params = _load_tuned_xgb_params(sector)
         if tuned_params:
-            print(f"      ✅ Using Optuna parameters for {sector}")
+            print(f"      Using Optuna parameters for {sector}")
         else:
-            print(f"      ℹ️ Using default XGBoost parameters for {sector}")
+            print(f"      Using default XGBoost parameters for {sector}")
 
         res = run_xgboost_backtest(X, y, model_params=tuned_params)
         
@@ -213,23 +213,23 @@ def build_xgboost_models(df, regime_df):
     for item in models_to_save[:3]:
         model_path = models_dir / f"xgb_{item['sector']}.joblib"
         joblib.dump(item["model"], model_path)
-        print(f"  💾 Saved top model: {model_path.name} (F1: {item['f1']:.3f})")
+        print(f"  Saved top model: {model_path.name} (F1: {item['f1']:.3f})")
         
     return metrics
 
 
 def build_prophet_model(df):
     """Forecast Nifty 50 absolute levels using Facebook Prophet."""
-    print("  🔮 Building Prophet Forecast for Nifty 50...")
+    print("  Building Prophet Forecast for Nifty 50...")
     
     try:
         from prophet import Prophet
     except ImportError:
-        print("  ⚠️ Prophet is not installed. Skipping this section.")
+        print("  Prophet is not installed. Skipping this section.")
         return {}
         
     if "Nifty_50" not in df.columns:
-        print("  ⚠️ Nifty_50 missing from dataset.")
+        print("  Nifty_50 missing from dataset.")
         return {}
         
     # Default top macro regressors if Granger results not available
@@ -241,7 +241,7 @@ def build_prophet_model(df):
     prophet_df = prophet_df.rename(columns={"Date": "ds", "Nifty_50": "y"})
     
     if len(prophet_df) < 60:
-        print("  ⚠️ Not enough data for Prophet.")
+        print("  Not enough data for Prophet.")
         return {}
         
     # Walk forward split
@@ -312,13 +312,13 @@ def run_ml_models():
     df = load_master_dataset()
     
     if df.empty:
-        print("  ❌ Master dataset is empty. Run Phase 1 first.")
+        print("  Master dataset is empty. Run Phase 1 first.")
         return
         
     try:
         regime_df = load_regime_labels()
     except Exception:
-        print("  ⚠️ Regime labels not found. Running without them.")
+        print("  Regime labels not found. Running without them.")
         regime_df = pd.DataFrame()
         
     xgb_metrics = build_xgboost_models(df, regime_df)
@@ -333,9 +333,9 @@ def run_ml_models():
     with open(metrics_path, "w") as f:
         json.dump(all_metrics, f, indent=4)
         
-    print(f"  💾 Saved model metrics to: {metrics_path.name}")
+    print(f"  Saved model metrics to: {metrics_path.name}")
     print("=" * 60)
-    print("  ✅ PHASE 5 COMPLETE")
+    print("  PHASE 5 COMPLETE")
     print("=" * 60)
 
 
