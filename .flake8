@@ -1,0 +1,7 @@
+[flake8]
+max-line-length = 100
+exclude = .venv,node_modules,dist,__pycache__
+# The project has legacy notebooks/scripts with substantial style debt.
+# Keep CI focused on correctness-level lint failures until those modules are
+# formatted in a dedicated cleanup pass.
+select = E9,F63,F7,F82

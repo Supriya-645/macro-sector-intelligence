@@ -1,0 +1,79 @@
+{
+    "Nifty_50_Return": {
+        "Accuracy": 0.6,
+        "F1_Score": 0.5714285714285714,
+        "Precision": 0.5714285714285714,
+        "Recall": 0.5714285714285714
+    },
+    "Nifty_Bank_Return": {
+        "Accuracy": 0.4,
+        "F1_Score": 0.35714285714285715,
+        "Precision": 0.35714285714285715,
+        "Recall": 0.35714285714285715
+    },
+    "Nifty_IT_Return": {
+        "Accuracy": 0.6,
+        "F1_Score": 0.4,
+        "Precision": 0.4,
+        "Recall": 0.4
+    },
+    "Nifty_Pharma_Return": {
+        "Accuracy": 0.5,
+        "F1_Score": 0.4,
+        "Precision": 0.4166666666666667,
+        "Recall": 0.38461538461538464
+    },
+    "Nifty_Auto_Return": {
+        "Accuracy": 0.5333333333333333,
+        "F1_Score": 0.6111111111111112,
+        "Precision": 0.6875,
+        "Recall": 0.55
+    },
+    "Nifty_FMCG_Return": {
+        "Accuracy": 0.6333333333333333,
+        "F1_Score": 0.6451612903225806,
+        "Precision": 0.625,
+        "Recall": 0.6666666666666666
+    },
+    "Nifty_Metal_Return": {
+        "Accuracy": 0.5666666666666667,
+        "F1_Score": 0.43478260869565216,
+        "Precision": 0.625,
+        "Recall": 0.3333333333333333
+    },
+    "Nifty_Realty_Return": {
+        "Accuracy": 0.4666666666666667,
+        "F1_Score": 0.38461538461538464,
+        "Precision": 0.4166666666666667,
+        "Recall": 0.35714285714285715
+    },
+    "Nifty_Energy_Return": {
+        "Accuracy": 0.36666666666666664,
+        "F1_Score": 0.3870967741935484,
+        "Precision": 0.4,
+        "Recall": 0.375
+    },
+    "Nifty_Infra_Return": {
+        "Accuracy": 0.5666666666666667,
+        "F1_Score": 0.6285714285714286,
+        "Precision": 0.6875,
+        "Recall": 0.5789473684210527
+    },
+    "Nifty_PSE_Return": {
+        "Accuracy": 0.4666666666666667,
+        "F1_Score": 0.5555555555555556,
+        "Precision": 0.5555555555555556,
+        "Recall": 0.5555555555555556
+    },
+    "Nifty_Media_Return": {
+        "Accuracy": 0.6333333333333333,
+        "F1_Score": 0.5217391304347826,
+        "Precision": 0.6,
+        "Recall": 0.46153846153846156
+    },
+    "Prophet_Nifty_50": {
+        "RMSE": 1667.1700084791812,
+        "MAE": 1325.747368912422,
+        "MAPE": 5.739425093672975
+    }
+}
